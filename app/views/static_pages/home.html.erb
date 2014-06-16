@@ -1,0 +1,190 @@
+   <title>   </title>  
+   <script>
+    $(window).bind("load", function() {
+       $.getScript('<%= asset_path('social.js') %>', function() {});
+    });
+</script>                   
+    <!--=========================== Start: MAIN CONTENT ========================================-->
+   <div class="splash">
+    <% if session[:events].present? %>
+   
+    <%= link_to "Continue Submission", addevent_path,:type => 'button',:class => 'btn btn-info'%> 
+     
+   
+    <% end %>
+    <div class="container">
+   
+      <div class="row">
+    <div class="col-lg-12">
+    <h1 class="tour_1 fontedits" >Thousands of events around your campus. </h1>
+    <h4 class="fontedits" > Events that interest you are just a click away!</h4> 
+   
+    <!---<div class="fb-like-box" data-href="http://www.facebook.com/Kampusbeecom" data-colorscheme="light" data-show-faces="true" data-header="true" data-stream="false" data-show-border="true"></div>--->
+   <!%= render partial: "shared/video" %>
+   <%= render partial: "static_pages/slider" %>
+    </div>  
+   
+    </div>
+    
+     <%= form_tag refresh_path, :method => :get do %>
+     <%=submit_tag "Choose your interests and start exploring",class:"btn btn-primary btn-lg wireframe" %>
+     <% end %>
+     <br>  
+   
+    <div class="row">
+  
+     <div class="col-md-6 col-md-offset-3"> 
+       <% if signed_in?%>
+    <a class="btn btn-primary btn-md wireframe" href="<%=addevent_path%>">Add an Event. It's fun :)</a>
+    <%else%>
+    <a class="btn btn-primary btn-md wireframe" href="<%=addevent_path%>">Add an Event. It's easy.</a>
+    <%end%>
+    <% if signed_in?%> 
+     <h4>Link Your Accounts</h4>
+     <% else %>
+    <h2 class="tour_9" style='font-family: color: #666;font-size: 30px;' >Sign up and Set your preferences</h2>            
+       <h4 style='font-family: color: #666;font-size: 20px;' >Set alerts by single click!</h4>
+    <a class="btn btn-primary btn-md wireframe" href="<%=users_preferences_path%>">Sign up!</a>          	   
+    <h4>Social logins </h4>
+    <% end %>
+     <div id="social">
+      <div class="social-icons-row" >
+      <% if @auth.where('provider'=>'facebook').present?%>             
+              <a href="#" target="_blank" style="color: orange;"><i class="icon-facebook"></i></a>
+               <% else %>
+               <a href="<%=user_omniauth_authorize_path(:facebook)%>" target="_blank"><i class="icon-facebook"></i></a>
+               <% end %>
+               <% if @auth.where('provider'=>'google_oauth2').present?%>
+               <a href="#" target="_blank" style="color: orange;"><i class="icon-google-plus"></i></a>
+                <% else %>
+               <a href="<%=user_omniauth_authorize_path(:google_oauth2)%>" target="_blank"><i class="icon-google-plus"></i></a> 
+                <% end %>
+                <% if @auth.where('provider'=>'twitter').present?%>
+               <a href="#" target="_blank" style="color: orange;"><i class="icon-twitter"></i></a>
+                <% else %>
+               <a href="<%=user_omniauth_authorize_path(:twitter)%>" target="_blank"><i class="icon-twitter"></i></a>
+                <% end %>      
+                                                     
+            </div>
+            </div>
+    
+    </div>
+</div>
+
+</div>
+</div>
+
+</div>
+        <!--======================= Center stufff===============-->
+<div class="container">
+	<div class="row">
+
+    	<div class="col-xs-12 col-sm-6 col-lg-4">
+			<div class="box">							
+				<div class="icon">
+					<div class="image"><i class="fa fa-thumbs-o-up"></i></div>
+					<div class="info">
+						<h3 class="title">Made with Bootstrap</h3>
+						<p>
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed in lobortis nisl, vitae iaculis sapien. Phasellus ultrices gravida massa luctus ornare. Suspendisse blandit quam elit, eu imperdiet neque semper.
+						</p>
+						<div class="more">
+							<a href="#" title="Title Link">
+								Read More <i class="fa fa-angle-double-right"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="space"></div>
+			</div> 
+		</div>
+			
+        <div class="col-xs-12 col-sm-6 col-lg-4">
+			<div class="box">							
+				<div class="icon">
+					<div class="image"><i class="fa fa-flag"></i></div>
+					<div class="info">
+						<h3 class="title">Icons by Font Awesome</h3>
+    					<p>
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed in lobortis nisl, vitae iaculis sapien. Phasellus ultrices gravida massa luctus ornare. Suspendisse blandit quam elit, eu imperdiet neque semper.
+						</p>
+						<div class="more">
+							<a href="#" title="Title Link">
+								Read More <i class="fa fa-angle-double-right"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="space"></div>
+			</div> 
+		</div>
+			
+        <div class="col-xs-12 col-sm-6 col-lg-4">
+			<div class="box">							
+				<div class="icon">
+					<div class="image"><i class="fa fa-desktop"></i></div>
+					<div class="info">
+						<h3 class="title">Desktop Friendly</h3>
+    					<p>
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed in lobortis nisl, vitae iaculis sapien. Phasellus ultrices gravida massa luctus ornare. Suspendisse blandit quam elit, eu imperdiet neque semper.
+						</p>
+						<div class="more">
+							<a href="#" title="Title Link">
+								Read More <i class="fa fa-angle-double-right"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="space"></div>
+			</div> 
+		</div>		    
+		
+	</div>
+</div>
+
+    <!-- ==================================================================================== -->
+    <!---- <div class="col-lg-4 col-lg-offset-4">
+            <input type="search" id="container-search" value="" class="form-control" placeholder="Search...">
+        </div>---> 
+        <div class="featurette" id="sec2">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <h1>Amazing Features</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2 col-md-offset-2 text-center">
+        <div class="featurette-item">
+          <i class="icon-bell"></i>
+          <h4>Alerts</h4>
+          <p>Setting up social alerts is a piece of cake</p>
+        </div>
+      </div>
+      <div class="col-md-2 text-center">
+        <div class="featurette-item">
+          <i class="icon-star"></i>
+          <h4>Catalogue</h4>
+          <p>Catalogue events of your interests</p>
+        </div>
+      </div>
+      <div class="col-md-2 text-center">
+        <div class="featurette-item">
+          <i class="fa fa-users"></i>
+          <h4>Network Groups</h4>
+          <p>Join groups. Have fun!</p>
+        </div>
+      </div>
+      <div class="col-md-2 text-center">
+        <div class="featurette-item">
+          <i class="icon-pencil"></i>
+          <h4>Preferences</h4>
+          <p>Set up your preferences. Get notified about latest events.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+ <%= render partial: "shared/groups" %>   
+    <!-- End: MAIN CONTENT -->
