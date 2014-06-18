@@ -23,15 +23,17 @@ match '/campus', to:'refresh#campusevents', via:'get'
 match '/approvals', to:'admin#index', via:'get' 
 match '/approve', to:'admin#update', via:'get'                        
 get "users/preferences"
-resources :campus 
+
    resources :events do #, shallow: true
       put :favorite, on: :member
         put :followfeed, on: :member
           put :share, on: :member
             put :submit, on: :member
          end
-   resources :groups      
-      #end
+         resources :groups, except: [:show, :index]
+   resources :campus do
+           resources :groups, only: [:show, :index]      
+         end
 resources :users do
    member do
       get :following, :followers

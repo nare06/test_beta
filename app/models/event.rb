@@ -2,7 +2,7 @@ class Event < ActiveRecord::Base
 #attr_accessor :upload, :edate, :contact_phone 
  extend FriendlyId
  
-attr_accessible :title,:organizer,:location,
+attr_accessible :title,:organizer,
                             :sdatetime,:edatetime,:contact_name ,
                            :contact_phone, :email,:short_description,
                             :events_description,:venue, :user_id, :avatar,:category_ids,
@@ -15,7 +15,7 @@ validates_datetime :edatetime, :after => :sdatetime
 validates :organizer, :presence => true
 validates :venue, :presence => true
 validates :reach_id, :presence => true
-validates :location, :presence => true
+validates :campus_id, :presence => true
 validates :events_description, :presence => true
 VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 validates :email, presence: true, format: { with: VALID_EMAIL_REGEX }

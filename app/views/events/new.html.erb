@@ -182,10 +182,10 @@
                          <br>
                           <label class="col-lg-2 control-label">Eligibility</label>
                         <div class="col-lg-10">
-                        <%= u.collection_check_boxes(:eligible_ids, Eligible.all, :id, :name) do |b|
-                          b.label(class:"btn btn-default category") { b.check_box(class: "hide") + b.text }
-                        end %>
-                         <%=link_to"Add a new Eligible Criteria",rails_admin.new_path('Eligible'),target: '_blank' %>
+              <%= u.collection_check_boxes(:eligible_ids, Eligible.all, :id, :name) do |b|
+                b.label(class:"btn btn-default category") { b.check_box(class: "hide") + b.text }
+                 end %>
+      <%=link_to"Add a new Eligible Criteria",rails_admin.new_path('Eligible'),target: '_blank' %>
                         <br>
                        </div>                                                
                       </div>

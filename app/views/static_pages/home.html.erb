@@ -22,35 +22,28 @@
     <!---<div class="fb-like-box" data-href="http://www.facebook.com/Kampusbeecom" data-colorscheme="light" data-show-faces="true" data-header="true" data-stream="false" data-show-border="true"></div>--->
    <!%= render partial: "shared/video" %>
    <%= render partial: "static_pages/slider" %>
-    </div>  
-   
-    </div>
-    
+          
      <%= form_tag refresh_path, :method => :get do %>
-     <%=submit_tag "Choose your interests and start exploring",class:"btn btn-primary btn-lg wireframe" %>
+     <div class="fontedits up">Pick up your interests </div>
+     <%=submit_tag "Start exploring",class:"btn btn-primary btn-md wireframe move fontedits" %>
+     
      <% end %>
-     <br>  
-   
+    
+     </div>    
+    </div>  
     <div class="row">
-  
-     <div class="col-md-6 col-md-offset-3"> 
-       <% if signed_in?%>
-    <a class="btn btn-primary btn-md wireframe" href="<%=addevent_path%>">Add an Event. It's fun :)</a>
-    <%else%>
-    <a class="btn btn-primary btn-md wireframe" href="<%=addevent_path%>">Add an Event. It's easy.</a>
-    <%end%>
+     <div class="col-lg-6 center"> 
+      
     <% if signed_in?%> 
      <h4>Link Your Accounts</h4>
-     <% else %>
-    <h2 class="tour_9" style='font-family: color: #666;font-size: 30px;' >Sign up and Set your preferences</h2>            
-       <h4 style='font-family: color: #666;font-size: 20px;' >Set alerts by single click!</h4>
-    <a class="btn btn-primary btn-md wireframe" href="<%=users_preferences_path%>">Sign up!</a>          	   
+     <% else %>            
+    <a class="btn btn-primary btn-md wireframe" href="<%=users_preferences_path%>">Sign up now!</a>          	   
     <h4>Social logins </h4>
     <% end %>
      <div id="social">
       <div class="social-icons-row" >
       <% if @auth.where('provider'=>'facebook').present?%>             
-              <a href="#" target="_blank" style="color: orange;"><i class="icon-facebook"></i></a>
+              <a href="#" target="_blank" style="color: blue;"><i class="icon-facebook"></i></a>
                <% else %>
                <a href="<%=user_omniauth_authorize_path(:facebook)%>" target="_blank"><i class="icon-facebook"></i></a>
                <% end %>
@@ -60,20 +53,26 @@
                <a href="<%=user_omniauth_authorize_path(:google_oauth2)%>" target="_blank"><i class="icon-google-plus"></i></a> 
                 <% end %>
                 <% if @auth.where('provider'=>'twitter').present?%>
-               <a href="#" target="_blank" style="color: orange;"><i class="icon-twitter"></i></a>
+               <a href="#" target="_blank" style="color: skyblue;"><i class="icon-twitter"></i></a>
                 <% else %>
                <a href="<%=user_omniauth_authorize_path(:twitter)%>" target="_blank"><i class="icon-twitter"></i></a>
                 <% end %>      
                                                      
             </div>
             </div>
-    
+    </div>
+<div class="col-lg-6 ">  
+ <div class="well wellopac">
+ <h1 class="fontedits" >Start here </h1>
+   <% if signed_in?%>
+    <a class="btn btn-primary btn-md wireframe" href="<%=addevent_path%>">Add an Event. It's fun :)</a>
+    <%else%>
+    <a class="btn btn-primary btn-md wireframe" href="<%=addevent_path%>">Add an Event. It's easy.</a>
+    <%end%>
+  </div> 
+   </div>
     </div>
 </div>
-
-</div>
-</div>
-
 </div>
         <!--======================= Center stufff===============-->
 <div class="container">

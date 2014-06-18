@@ -1,5 +1,7 @@
 class CampusController < ApplicationController
-
+def new
+@campus = Campus.new
+end
 def show
 @campus = Campus.friendly.find(params[:id])
 @events = Event.new
