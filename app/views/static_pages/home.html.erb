@@ -15,29 +15,35 @@
     <div class="container">
    
       <div class="row">
-    <div class="col-lg-12">
+    
     <h1 class="tour_1 fontedits" >Thousands of events around your campus. </h1>
     <h4 class="fontedits" > Events that interest you are just a click away!</h4> 
-   
+   <h5 class="fontedits">Pick up your interests </h5>
     <!---<div class="fb-like-box" data-href="http://www.facebook.com/Kampusbeecom" data-colorscheme="light" data-show-faces="true" data-header="true" data-stream="false" data-show-border="true"></div>--->
    <!%= render partial: "shared/video" %>
    <%= render partial: "static_pages/slider" %>
-          
+     <br> <br>     
      <%= form_tag refresh_path, :method => :get do %>
-     <div class="fontedits up">Pick up your interests </div>
-     <%=submit_tag "Start exploring",class:"btn btn-primary btn-md wireframe move fontedits" %>
+     <br>
+     <%=submit_tag "Start exploring",class:"btn btn-primary btn-lg wireframe move fontedits" %>
      
      <% end %>
     
      </div>    
-    </div>  
+     <br>
+    <br><br> <br>
     <div class="row">
-     <div class="col-lg-6 center"> 
-      
-    <% if signed_in?%> 
+     <div class="col-lg-7"> 
+      <ul class="list_style">
+      <li><span class="fa fa-users"></span>Best way to stay notified about latest happenings in the college</li>
+      <li><span class="fa fa-lock"></span>Follow users/organisers to see the events they are attending</li>
+      <li><span class="fa fa-envelope"></span>Setting up alerts through google calendar and facebook notifications by a single click!</li>
+      <li><span class="fa fa-envelope"></span>Adding an event is easy and super fun!</li>
+      <li><span class="fa fa-comments"></span>Easy signup using social network logins</li>
+      <% if signed_in?%> 
      <h4>Link Your Accounts</h4>
-     <% else %>            
-    <a class="btn btn-primary btn-md wireframe" href="<%=users_preferences_path%>">Sign up now!</a>          	   
+     <% else %>                      	   
+    <br> 
     <h4>Social logins </h4>
     <% end %>
      <div id="social">
@@ -56,24 +62,58 @@
                <a href="#" target="_blank" style="color: skyblue;"><i class="icon-twitter"></i></a>
                 <% else %>
                <a href="<%=user_omniauth_authorize_path(:twitter)%>" target="_blank"><i class="icon-twitter"></i></a>
-                <% end %>      
-                                                     
-            </div>
-            </div>
+                <% end %>
+                 
+      </ul>
     </div>
-<div class="col-lg-6 ">  
+    
+<div class="col-lg-5 ">  
  <div class="well wellopac">
- <h1 class="fontedits" >Start here </h1>
+ <h1 class="fontedits">Start here </h1>
+ 
    <% if signed_in?%>
     <a class="btn btn-primary btn-md wireframe" href="<%=addevent_path%>">Add an Event. It's fun :)</a>
     <%else%>
-    <a class="btn btn-primary btn-md wireframe" href="<%=addevent_path%>">Add an Event. It's easy.</a>
-    <%end%>
+    <%= form_for @user do |f| %>
+               <%= render 'shared/error_messages', :object => f.object %>
+     
+      <%= f.text_field :email, :placeholder =>'Email',class: 'form-control' %>
+      <%= f.password_field :password, :placeholder =>'Password',class: 'form-control'%>
+      <br>
+       <%= f.hidden_field :name, value:"New-Bee", readonly: "readonly" %>
+       <%= f.collection_select :campus, Campus.all, :id, :name,{:prompt => 'Please select your campus'},{class: "form-control"} %>
+     <%= f.hidden_field :role,class: 'form-control', value: "user", readonly: "readonly" %><br>      
+      <%= f.submit "Create my account", class: "btn btn-large btn-primary" %> 
+    <% end %> 
+    <br>
+    <h5>Campus not available? Add here.</h5>
+    <%= form_for @campus do |f| %>
+      <div class="col-lg-8 ">
+       <%= f.text_field :name, :placeholder =>'Submit your campus',class: 'form-control' %>
+      <p>Ex: Indian Institute of Technology Kharagpur, Vellore Institute of Technology</p>
+      </div>
+      <div class="col-lg-4 ">
+       <%= f.text_field :short_name, :placeholder =>'Short name',class: 'form-control' %><br>
+       <p>Ex: IITKGP, VIT</p>
+      </div> 
+     
+      <%= f.submit "Submit", class: "btn btn-sm btn-primary center" %>
+      
+    
+      <%end%>
+ 
+   
+      <% end %> 
+    
+         <br> 
+                                                     
+            </div>
+            </div>
   </div> 
    </div>
     </div>
-</div>
-</div>
+
+
         <!--======================= Center stufff===============-->
 <div class="container">
 	<div class="row">
@@ -145,6 +185,7 @@
     <!---- <div class="col-lg-4 col-lg-offset-4">
             <input type="search" id="container-search" value="" class="form-control" placeholder="Search...">
         </div>---> 
+        
         <div class="featurette" id="sec2">
   <div class="container">
     <div class="row">
@@ -163,15 +204,15 @@
       <div class="col-md-2 text-center">
         <div class="featurette-item">
           <i class="icon-star"></i>
-          <h4>Catalogue</h4>
-          <p>Catalogue events of your interests</p>
+          <h4>Events</h4>
+          <p>Now creating events is super-easy. You can easily catalogue events of your interest</p>
         </div>
       </div>
       <div class="col-md-2 text-center">
         <div class="featurette-item">
           <i class="fa fa-users"></i>
           <h4>Network Groups</h4>
-          <p>Join groups. Have fun!</p>
+          <p>Follow other users/organisers. Join groups. Have fun!</p>
         </div>
       </div>
       <div class="col-md-2 text-center">
@@ -185,5 +226,10 @@
   </div>
 </div>
 <br>
+<div class="container">
+<a class="btn btn-primary btn-md wireframe" href="<%=addevent_path%>">Add an Event. It's easy.</a>
+<%= render partial: "static_pages/group_slider" %>
+<br>
  <%= render partial: "shared/groups" %>   
+</div>
     <!-- End: MAIN CONTENT -->

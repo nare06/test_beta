@@ -71,7 +71,7 @@ private
 
     def user_params
       params.require(:user).permit(:name, :email, :password,
-                                   :password_confirmation,:role)
+                                   :password_confirmation,:role,:campus)
     end
     def set_user
       @user = User.friendly.find(params[:id])

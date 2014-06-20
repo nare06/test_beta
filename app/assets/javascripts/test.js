@@ -122,6 +122,12 @@ $(document).ready(function() {
     interval: false
   });
 });
+$(document).ready(function() {
+  $('#media1').carousel({
+    pause: true,
+    interval: false
+  });
+});
 //////end
 
  $(document).ready(function() {  

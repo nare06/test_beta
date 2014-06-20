@@ -1,11 +1,12 @@
-class StaticPagesController < ApplicationController
-  def home
-  
-  @user = User.new
-    #@title = "Home"
-    @events = Event.new
-     @event = Event.new
-    @events = Event.where("workflow_state=? and edatetime > ?","accept", Time.now).reverse
+class CampusesController < ApplicationController
+def new
+@campus = Campus.new
+end
+def show
+@campus = Campus.friendly.find(params[:id])
+@events = Event.new
+     @events = @campus.events
+    #@events = Event.where("workflow_state=? and edatetime > ?","accept", Time.now).reverse
    # @events = Event.where("sdatetime > ? and sdatetime < ?", Time.now.beginning_of_day + num.day, Time.now.end_of_day + num.day) if num.present?
     @tab1 = Event.where("reach_id = 1 and workflow_state=? and edatetime > ?","accept",Time.now).sort_by{|u| u.updated_at}.reverse     
     @tab2   = Event.where("reach_id = 2 and workflow_state=? and edatetime > ?","accept", Time.now ).reverse 
@@ -45,49 +46,10 @@ class StaticPagesController < ApplicationController
          @tab3 = sorted_ids.map { |id| records[id].first }
     @tab4 = @user.userfavorites.where("workflow_state=? and edatetime > ?","accept", Time.now).reverse 
     @tab6 = @user.usershares.where("workflow_state=? and edatetime > ?","accept", Time.now).reverse
-    @tab7 = @user.events.reverse  
-    @campus = Campus.new       
-  end
-  
-  def new_events
-  t = Time.at(params[:created_at].to_i)
-     @events = Event.where("updated_at > ?",Time.at(params[:created_at].to_i))
-     @user = current_user || User.new
-     respond_to do |format|
-        format.js
-     end
-  end
-  
-  def about
-   # @title = "About"
-  end
-  
-  def contact
-   # @title = "Contact"
-  end
-  
-  def help
-   # @title = "Help"
-  end
-  
-  def faq  
-  end
-  def tour
-  end
-  def our_works
-  end
-  def team
-  end
-  def partnerships
-  end
-  def show
-     @events = Event.all.reverse
-     respond_to do |format|
-     format.js
-     end
-     end
-   def launch
-     render :layout => false 
-   end
-      
+    @tab7 = @user.events.reverse
+end
+def create
+@campus = Campus.new
+end
+
 end

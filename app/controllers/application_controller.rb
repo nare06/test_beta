@@ -34,7 +34,7 @@ before_filter :update_sanitized_params, if: :devise_controller?
    # Customize the Devise after_sign_in_path_for() for redirecct to previous page after login
  
 def update_sanitized_params
-  devise_parameter_sanitizer.for(:sign_up) {|u| u.permit(:name, :email, :password, :password_confirmation,:role)}
+  devise_parameter_sanitizer.for(:sign_up) {|u| u.permit(:name, :email, :password, :password_confirmation,:role,:campus)}
 end
 
 end
