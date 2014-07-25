@@ -1,7 +1,14 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
-
+jQuery ->
+  $("input[id*='category_ids']").click ->
+    if $(@).prop('checked')
+      $(@).parent().removeClass('label_box')
+      $(@).parent().addClass('label_add')
+    else
+      $(@).parent().removeClass('label_add')
+      $(@).parent().addClass('label_box')
 jQuery ->
   $("input[id*='event_category_ids']").click ->
     if $(@).prop('checked')

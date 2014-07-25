@@ -40,7 +40,8 @@
    
    <%=submit_tag "Search"%>
    <% end %> 
-   </div>
+    </div>
+    </div>
    </div>
 <div class="col-lg-10">
         <div class="page-header">
@@ -49,7 +50,7 @@
         <%= render partial: "static_pages/event", collection: @events %> 
         
 <%= will_paginate @events, class:"pager" %>
-    <%= button_to 'Add Event', addevent_path, method: 'get' %>
+    <%= button_to 'Add an Event', new_event_path, method: 'get', class: "btn btn-primary btn-sm" %>
     <!-- End: MAIN CONTENT -->
     <!-- Start: FOOTER -->
     </div>

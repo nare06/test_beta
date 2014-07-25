@@ -7,7 +7,6 @@ Devise.setup do |config|
   # random tokens. Changing this key will render invalid all existing
    config.mailer_sender = 'kampusbee@gmail.com'
   #config.omniauth :facebook, ENV["APP_ID"], ENV["SECRET_KEY"], :strategy_class => OmniAuth::Strategies::Facebook
-  require 'devise/orm/active_record'
    # config.sign_out_via = :get
   config.omniauth :facebook, ENV["FACEBOOK_KEY"], ENV["FACEBOOK_SECRET"], { :scope => 'email, offline_access'}
   config.omniauth :twitter, ENV["TWITTER_KEY"], ENV["TWITTER_SECRET"], { :scope => 'r_fullprofile, r_emailaddress'}

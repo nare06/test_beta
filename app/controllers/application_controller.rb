@@ -14,23 +14,6 @@ before_filter :update_sanitized_params, if: :devise_controller?
    
   end 
   
-  helper_method :now_user, :logged_in?
- 
-  def now_user
-    u = nil
-    if !!session[:user_id]
-      begin
-        u = User.find(session[:user_id])
-      rescue ActiveRecord::RecordNotFound => e
-        session[:user_id] = nil
-      end
-    end
-    u
-  end
-
-  def logged_in?
-    !!now_user
-  end
    # Customize the Devise after_sign_in_path_for() for redirecct to previous page after login
  
 def update_sanitized_params

@@ -12,10 +12,7 @@
 //= require jquery-ui.min
 //= require jquery.datetimepicker
 //= require jquery.searchable
-//= require underscore
 //= require jquery.easing.1.3
 //= require jquery.storage
 //= require jquery.tour
 //= require test
-
-

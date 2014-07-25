@@ -11,31 +11,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140617162257) do
+ActiveRecord::Schema.define(version: 20140724062534) do
 
-  create_table "assignments", force: true do |t|
-    t.integer "role_id"
-    t.integer "user_id"
-  end
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "authorizations", force: true do |t|
     t.string   "provider"
     t.string   "uid"
-    t.integer  "user_id"
     t.string   "token"
     t.string   "secret"
+    t.string   "username"
+    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "username"
   end
 
-  create_table "campus", force: true do |t|
-    t.integer  "user_id"
-    t.integer  "event_id"
-    t.integer  "group_id"
-    t.string   "slug"
+  add_index "authorizations", ["user_id"], name: "index_authorizations_on_user_id", using: :btree
+
+  create_table "campuses", force: true do |t|
     t.string   "name"
     t.string   "short_name"
+    t.string   "slug"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -44,17 +41,22 @@ ActiveRecord::Schema.define(version: 20140617162257) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "image_url"
   end
 
-  create_table "categories_events", force: true do |t|
+  create_table "categories_events", id: false, force: true do |t|
     t.integer "category_id"
     t.integer "event_id"
   end
 
-  create_table "categories_users", force: true do |t|
+  add_index "categories_events", ["category_id", "event_id"], name: "index_categories_events_on_category_id_and_event_id", unique: true, using: :btree
+
+  create_table "categories_users", id: false, force: true do |t|
     t.integer "category_id"
     t.integer "user_id"
   end
+
+  add_index "categories_users", ["category_id", "user_id"], name: "index_categories_users_on_category_id_and_user_id", unique: true, using: :btree
 
   create_table "ckeditor_assets", force: true do |t|
     t.string   "data_file_name",               null: false
@@ -69,8 +71,8 @@ ActiveRecord::Schema.define(version: 20140617162257) do
     t.datetime "updated_at"
   end
 
-  add_index "ckeditor_assets", ["assetable_type", "assetable_id"], name: "idx_ckeditor_assetable"
-  add_index "ckeditor_assets", ["assetable_type", "type", "assetable_id"], name: "idx_ckeditor_assetable_type"
+  add_index "ckeditor_assets", ["assetable_type", "assetable_id"], name: "idx_ckeditor_assetable", using: :btree
+  add_index "ckeditor_assets", ["assetable_type", "type", "assetable_id"], name: "idx_ckeditor_assetable_type", using: :btree
 
   create_table "delayed_jobs", force: true do |t|
     t.integer  "priority",   default: 0, null: false
@@ -86,7 +88,7 @@ ActiveRecord::Schema.define(version: 20140617162257) do
     t.datetime "updated_at"
   end
 
-  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority"
+  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
   create_table "domains", force: true do |t|
     t.string   "name"
@@ -94,20 +96,26 @@ ActiveRecord::Schema.define(version: 20140617162257) do
     t.datetime "updated_at"
   end
 
-  create_table "domains_events", force: true do |t|
+  create_table "domains_events", id: false, force: true do |t|
     t.integer "domain_id"
     t.integer "event_id"
   end
 
-  create_table "domains_groups", force: true do |t|
+  add_index "domains_events", ["domain_id", "event_id"], name: "index_domains_events_on_domain_id_and_event_id", unique: true, using: :btree
+
+  create_table "domains_groups", id: false, force: true do |t|
     t.integer "domain_id"
     t.integer "group_id"
   end
 
-  create_table "domains_users", force: true do |t|
-    t.integer "domain_id"
-    t.integer "user_id"
+  add_index "domains_groups", ["domain_id", "group_id"], name: "index_domains_groups_on_domain_id_and_group_id", unique: true, using: :btree
+
+  create_table "domains_users", id: false, force: true do |t|
+    t.integer "domain_id", null: false
+    t.integer "user_id",   null: false
   end
+
+  add_index "domains_users", ["domain_id", "user_id"], name: "index_domains_users_on_domain_id_and_user_id", unique: true, using: :btree
 
   create_table "eligibles", force: true do |t|
     t.string   "name"
@@ -115,15 +123,19 @@ ActiveRecord::Schema.define(version: 20140617162257) do
     t.datetime "updated_at"
   end
 
-  create_table "eligibles_events", force: true do |t|
+  create_table "eligibles_events", id: false, force: true do |t|
     t.integer "eligible_id"
     t.integer "event_id"
   end
 
-  create_table "eligibles_users", force: true do |t|
+  add_index "eligibles_events", ["eligible_id", "event_id"], name: "index_eligibles_events_on_eligible_id_and_event_id", unique: true, using: :btree
+
+  create_table "eligibles_users", id: false, force: true do |t|
     t.integer "eligible_id"
     t.integer "user_id"
   end
+
+  add_index "eligibles_users", ["eligible_id", "user_id"], name: "index_eligibles_users_on_eligible_id_and_user_id", unique: true, using: :btree
 
   create_table "events", force: true do |t|
     t.string   "title"
@@ -136,30 +148,40 @@ ActiveRecord::Schema.define(version: 20140617162257) do
     t.string   "email"
     t.text     "events_description"
     t.string   "short_description"
-    t.integer  "user_id"
     t.string   "venue"
+    t.string   "web"
+    t.integer  "user_id"
+    t.integer  "campus_id"
+    t.integer  "group_id"
+    t.integer  "reach_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "avatar_file_name"
     t.string   "avatar_content_type"
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
-    t.string   "web"
-    t.integer  "reach_id"
     t.string   "workflow_state"
     t.string   "slug"
-    t.integer  "campus_id"
   end
+
+  add_index "events", ["campus_id"], name: "index_events_on_campus_id", using: :btree
+  add_index "events", ["group_id"], name: "index_events_on_group_id", using: :btree
+  add_index "events", ["reach_id"], name: "index_events_on_reach_id", using: :btree
+  add_index "events", ["user_id"], name: "index_events_on_user_id", using: :btree
 
   create_table "favorites", force: true do |t|
     t.integer "user_id"
     t.integer "event_id"
   end
 
+  add_index "favorites", ["user_id", "event_id"], name: "index_favorites_on_user_id_and_event_id", unique: true, using: :btree
+
   create_table "followfeeds", force: true do |t|
     t.integer "user_id"
     t.integer "event_id"
   end
+
+  add_index "followfeeds", ["user_id", "event_id"], name: "index_followfeeds_on_user_id_and_event_id", unique: true, using: :btree
 
   create_table "friendly_id_slugs", force: true do |t|
     t.string   "slug",                      null: false
@@ -169,25 +191,23 @@ ActiveRecord::Schema.define(version: 20140617162257) do
     t.datetime "created_at"
   end
 
-  add_index "friendly_id_slugs", ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
-  add_index "friendly_id_slugs", ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
-  add_index "friendly_id_slugs", ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id"
-  add_index "friendly_id_slugs", ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
+  add_index "friendly_id_slugs", ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true, using: :btree
+  add_index "friendly_id_slugs", ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type", using: :btree
+  add_index "friendly_id_slugs", ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id", using: :btree
+  add_index "friendly_id_slugs", ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type", using: :btree
 
   create_table "groups", force: true do |t|
-    t.integer  "user_id"
-    t.integer  "event_id"
-    t.string   "slug"
-    t.string   "name"
-    t.text     "description"
-    t.string   "short_name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "campus_id"
-    t.string   "contact_name"
-    t.integer  "contact_phone"
-    t.string   "email"
+    t.string  "name"
+    t.string  "slug"
+    t.text    "description"
+    t.string  "short_name"
+    t.integer "campus_id"
+    t.string  "contact_name"
+    t.integer "contact_phone"
+    t.string  "email"
   end
+
+  add_index "groups", ["campus_id"], name: "index_groups_on_campus_id", using: :btree
 
   create_table "microposts", force: true do |t|
     t.string   "content"
@@ -196,18 +216,7 @@ ActiveRecord::Schema.define(version: 20140617162257) do
     t.datetime "updated_at"
   end
 
-  add_index "microposts", ["user_id"], name: "index_microposts_on_user_id"
-
-  create_table "pushids", force: true do |t|
-    t.integer  "user_id"
-    t.integer  "event_id"
-    t.string   "fbpush_id"
-    t.string   "gcpush_id"
-    t.string   "gcpush_htmllink"
-    t.string   "fbpush_htmllink"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
+  add_index "microposts", ["user_id"], name: "index_microposts_on_user_id", using: :btree
 
   create_table "reaches", force: true do |t|
     t.string   "name"
@@ -222,9 +231,9 @@ ActiveRecord::Schema.define(version: 20140617162257) do
     t.datetime "updated_at"
   end
 
-  add_index "relationships", ["followed_id"], name: "index_relationships_on_followed_id"
-  add_index "relationships", ["follower_id", "followed_id"], name: "index_relationships_on_follower_id_and_followed_id", unique: true
-  add_index "relationships", ["follower_id"], name: "index_relationships_on_follower_id"
+  add_index "relationships", ["followed_id"], name: "index_relationships_on_followed_id", using: :btree
+  add_index "relationships", ["follower_id", "followed_id"], name: "index_relationships_on_follower_id_and_followed_id", unique: true, using: :btree
+  add_index "relationships", ["follower_id"], name: "index_relationships_on_follower_id", using: :btree
 
   create_table "roles", force: true do |t|
     t.string   "name"
@@ -237,6 +246,8 @@ ActiveRecord::Schema.define(version: 20140617162257) do
     t.integer "user_id"
   end
 
+  add_index "roles_users", ["role_id", "user_id"], name: "index_roles_users_on_role_id_and_user_id", unique: true, using: :btree
+
   create_table "sessions", force: true do |t|
     t.string   "session_id", null: false
     t.text     "data"
@@ -244,16 +255,33 @@ ActiveRecord::Schema.define(version: 20140617162257) do
     t.datetime "updated_at"
   end
 
-  add_index "sessions", ["session_id"], name: "index_sessions_on_session_id", unique: true
-  add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at"
+  add_index "sessions", ["session_id"], name: "index_sessions_on_session_id", unique: true, using: :btree
+  add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at", using: :btree
+
+  create_table "set_alerts", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "event_id"
+    t.string   "fbpush_id"
+    t.string   "gcpush_id"
+    t.string   "gcpush_htmllink"
+    t.string   "fbpush_htmllink"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "set_alerts", ["user_id", "event_id"], name: "index_set_alerts_on_user_id_and_event_id", unique: true, using: :btree
 
   create_table "shares", force: true do |t|
     t.integer "user_id"
     t.integer "event_id"
   end
 
+  add_index "shares", ["user_id", "event_id"], name: "index_shares_on_user_id_and_event_id", unique: true, using: :btree
+
   create_table "users", force: true do |t|
     t.string   "name"
+    t.integer  "campus_id"
+    t.integer  "group_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "admin",                  default: false
@@ -270,21 +298,20 @@ ActiveRecord::Schema.define(version: 20140617162257) do
     t.string   "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
-    t.string   "provider"
-    t.string   "uid"
     t.string   "image"
     t.string   "avatar_file_name"
     t.string   "avatar_content_type"
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
-    t.string   "aboutme"
     t.string   "role",                   default: "guest"
+    t.string   "aboutme"
     t.string   "slug"
-    t.integer  "campus_id"
   end
 
-  add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  add_index "users", ["campus_id"], name: "index_users_on_campus_id", using: :btree
+  add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["group_id"], name: "index_users_on_group_id", using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
 end

@@ -129,7 +129,6 @@ $(document).ready(function() {
   });
 });
 //////end
-
  $(document).ready(function() {  
  $('.ckeditor').ckeditor({
   // optional config

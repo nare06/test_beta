@@ -15,7 +15,6 @@
                       <%= link_to 'Facebook', user_omniauth_authorize_path(:facebook), :class =>'btn-facebook',target: '_blank' %>
                    
                        <%= link_to 'Google', user_omniauth_authorize_path(:google_oauth2), :class =>'btn-google', target: '_blank' %>
-       
                        
                   </li>
                 </ul>
@@ -44,7 +43,7 @@
                 
                 <div class="panel-body">
                   **You can link twitter account after signup. You can use the authorization for subsequent logins <br>
-            
+            <%=render partial: "devise/shared/links" %>
                 </div>
                 </div>
               </div>

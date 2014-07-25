@@ -3,10 +3,10 @@ class CreateAuthorizations < ActiveRecord::Migration
     create_table :authorizations do |t|
       t.string :provider
       t.string :uid, :unique => true
-      t.integer :user_id
       t.string :token
       t.string :secret
-
+      t.string :username
+      t.belongs_to :user, index: true
       t.timestamps
     end
   end

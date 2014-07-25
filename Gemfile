@@ -42,8 +42,10 @@ gem 'mail_form'
 gem 'gmaps4rails'
 gem 'friendly_id', '~> 5.0.0'
 gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
+gem 'elasticsearch-model', git: 'git://github.com/elasticsearch/elasticsearch-rails.git'
+gem 'elasticsearch-rails', git: 'git://github.com/elasticsearch/elasticsearch-rails.git'
+  gem 'pg', '0.15.1'
 group :development, :test do
-  gem 'sqlite3', '1.3.8'
   gem 'rspec-rails', '2.13.1'
   gem 'faker', '0.3.1'
   gem 'debugger'
@@ -71,7 +73,6 @@ group :doc do
 end
 
 group :production do
-  gem 'pg', '0.15.1'
   gem 'rails_12factor', '0.0.2'
 end
 

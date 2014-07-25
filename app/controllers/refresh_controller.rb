@@ -1,5 +1,5 @@
 class RefreshController < ApplicationController
-before_filter :authenticate_user!, only: :myevents
+before_action :authenticate_user!, only: :myevents
 def index
 @cat = Category.find(params[:category][:category_id]) if params[:category][:category_id].present?
   @dom = Domain.find(params[:domain][:domain_id]) if params[:domain][:domain_id].present?
@@ -20,18 +20,17 @@ num = params[:num]
 week = params[:week]
 @user = current_user || User.new
 if date.present?
-time = Date.new(date["year"].to_i,date["month"].to_i,date["day"].to_i)
-
-    @all = Event.where("sdatetime > ? and sdatetime < ?", time.beginning_of_day, time.end_of_day).reverse 
+    time = Date.new(date["year"].to_i,date["month"].to_i,date["day"].to_i)
+    @all = Event.approved.upcoming.latest.where("sdatetime > ? and sdatetime < ?", time.beginning_of_day, time.end_of_day)
     render "index"
     elsif num.present?    
-     @all = Event.where("sdatetime > ? and sdatetime < ?", Time.now.beginning_of_day, Time.now.end_of_day+ num.to_i.days).reverse
+     @all = Event.approved.upcoming.latest.where("sdatetime > ? and sdatetime < ?", Time.now.beginning_of_day, Time.now.end_of_day + num.to_i.days)
      render "index"
      elsif week.present?
-       @all = Event.where("sdatetime > ? and sdatetime < ?", Time.now.beginning_of_week, Time.now.end_of_week).reverse
+       @all = Event.approved.upcoming.latest.where("sdatetime > ? and sdatetime < ?", Time.now.beginning_of_week, Time.now.end_of_week)
        render "index"
      else
-     @all = Event.where("sdatetime > ? and sdatetime < ?", Time.now.beginning_of_month, Time.now.end_of_month).reverse
+     @all = Event.approved.upcoming.latest.where("sdatetime > ? and sdatetime < ?", Time.now.beginning_of_month, Time.now.end_of_month)
      render "index"
      end
 end
@@ -69,19 +68,19 @@ def myevents
     render "index"
 end
 def hallevents
-@user = current_user || User.new
- @all = Event.where("reach_id = 2 and workflow_state=?","accept").sort_by{|u| u.updated_at}.reverse     
+    @user = current_user || User.new
+    @all = Event.approved.upcoming.latest.where("reach_id = ?",2)     
     render "index"
 end
 def campusevents
-@user = current_user || User.new
-@all   = Event.where("reach_id = 1 and workflow_state=?","accept").reverse 
-render "index"
+    @user = current_user || User.new
+    @all   = Event.approved.upcoming.latest.where("reach_id = ?",1)
+    render "index"
 end
 def search
 @user = current_user || User.new
 @search = params[:search]
-@all = Event.where('title LIKE ? and workflow_state=?', "%#{@search}%","accept").reverse
+@all = Event.approved.upcoming.latest.search "#{@search}"
 render "index"
 end
 end

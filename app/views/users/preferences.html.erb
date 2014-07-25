@@ -7,29 +7,23 @@
               <%= form_for @user,:html => {:class =>"form-horizontal form-signin-signup"} do |f| %>
                <%= render 'shared/error_messages', :object => f.object %>
                
-                
-          <div class="col-lg-10">
-             <div class="row">
-     <div class="col-lg-2">
-             
-     
-     <%=f.label :avatar %> 
+ <div class="col-lg-10">
+    <div class="row">
+     <div class="col-lg-2"><%=f.label :name %></div>
+     <div class="col-lg-8"><%= f.text_field :name, :class => "form-control" %></div>
+    </div>
+    <div class="row">
+     <div class="col-lg-2"><%=f.label :avatar %></div>
+     <div class="col-lg-8"><%= f.file_field :avatar %></div>
+    </div>
+    <div class="row">
+     <div class="col-lg-2"><%=f.label :domain_ids, 'Domains:' %></div>
+    <div class="col-lg-8"><%= f.collection_check_boxes(:domain_ids, Domain.all, :id, :name) do |b|
+                          b.label(class:"btn btn-default btn-xs category") { b.check_box(class: "hide") + b.text }
+                            end %>
      </div>
-     <div class="col-lg-8">
-    <%= f.file_field :avatar %>
-     </div>
-     </div>
-     <div class="row">
-     <div class="col-lg-2">
-      <%=f.label :domain_ids, 'Domains:' %>
-      </div>
-           <div class="col-lg-8">
-      <%= f.collection_check_boxes(:domain_ids, Domain.all, :id, :name) do |b|
-       b.label(class:"btn btn-default btn-xs category") { b.check_box(class: "hide") + b.text }
-                        end %>
-                        </div>
-                </div>
-        <div class="row">
+    </div>
+    <div class="row">
      <div class="col-lg-2">        
       <%=f.label :category_ids, 'Categories:' %>
       </div>
@@ -55,7 +49,7 @@
          <%= f.label :aboutme, "About me" %>
         </div>
         <div class="col-lg-8">
-              <%= f.text_area :aboutme, :size => "65x5" %>
+              <%= f.text_area :aboutme, :size => "65x5", :class => "form-control" %>
           </div>
            </div>
 

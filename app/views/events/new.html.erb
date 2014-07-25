@@ -1,7 +1,4 @@
-<title></title>	
-
- 
-           				
+<title></title>	            				
       <div class="container" style="width:1170px">	
       <!-- END SIDEBAR -->
       
@@ -146,7 +143,7 @@
                         <div class="col-lg-9">
          <%= u.collection_select(:reach_id, Reach.all, :id,:name,include_blank: "Choose") do |b|
                           b.label(class:"btn btn-default category") { b.check_box(class: "hide") + b.text } end %>  
-                        <!%=link_to"Add your own event reach",rails_admin.new_path('Reach'),target: '_blank' %> 
+                        <%#link_to"Add your own event reach",rails_admin.new_path('Reach'),target: '_blank' %> 
                         </div>
                         
                       </div>

@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
-before_filter :save_event, only: [:create]
-before_filter :authenticate_user!, except: [:new, :show, :index ]  #:only: [:new, :create ,:blah]
+before_action :save_event, only: [:create]
+before_action :authenticate_user!, except: [:new, :show, :index ]  #:only: [:new, :create ,:blah]
  def show
    
    @event = Event.friendly.find(params[:id])
@@ -15,7 +15,7 @@ before_filter :authenticate_user!, except: [:new, :show, :index ]  #:only: [:new
   # GET /events.json
   def index
   @user = current_user || User.new
-    @events = Event.all
+    @events = Event.approved
     @events = @events.paginate :page => params[:page], :per_page => 10
       respond_to do |format|
         format.html
@@ -153,8 +153,10 @@ before_filter :authenticate_user!, except: [:new, :show, :index ]  #:only: [:new
 
     def event_params
       params.require(:event).permit(:email,:contact_name,:title,:sdatetime,:venue,
-      :location,:events_description,:short_description,:email,:user_id,:organizer,
-      :edatetime,:contact_phone,{:domain_ids =>[]},{:category_ids =>[]},{:eligible_ids =>[]},:avatar,:web,:reach_id,:workflow_state,:slug,:campus_id)                              
+      :location,:events_description,:short_description,:email,:user,:organizer,
+      :edatetime,:contact_phone,{:domain_ids =>[]},{:category_ids =>[]},
+      {:eligible_ids =>[]},:avatar,:web,:reach,:workflow_state,
+      :slug,:campus, :group)                              
     end  
   
 

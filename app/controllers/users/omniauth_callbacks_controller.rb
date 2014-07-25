@@ -1,18 +1,17 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     
-    	skip_before_filter :authenticate_user!
+skip_before_filter :authenticate_user!
     	
 
 def all
 p env["omniauth.auth"]
-@usr = env["omniauth.auth"]
+#@user = env["omniauth.auth"]
 user = User.from_omniauth(env["omniauth.auth"], current_user)
-session[:user_id] = user.id
+#session[:user_id] = user.id
 if user.persisted?
-flash[:notice] = "You are in..!!! Go to edit profile to see the status for the accounts"
+  flash[:notice] = "You are in..!!! Go to edit profile to see the status for the accounts"
 #render 'new'
-
- event = Event.new
+  event = Event.new
    if session[:events]
     event = Event.create(params[:event], session[:events])
   end

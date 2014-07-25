@@ -10,6 +10,7 @@ def self.up
 
       t.timestamps
     end
+    add_index :pushids, ["user_id", "event_id"], :unique => true
   end
   def self.down
    drop_table :pushids
